@@ -6,6 +6,7 @@ import 'package:ptts/features/domain/usecases/get_pdf_file_db.dart';
 import 'package:ptts/features/domain/usecases/get_pdf_file_dir.dart';
 import 'package:ptts/features/domain/usecases/insert_pdf_file_db.dart';
 import 'package:ptts/features/domain/usecases/remove_pdf_file_db.dart';
+import 'package:ptts/features/presentation/bloc/pdf_file_bloc/pdf_file_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -24,5 +25,5 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<RemovePdfFileFromDbUseCase>(
       RemovePdfFileFromDbUseCase(sl()));
 
-  // sl.registerFactory(() => PdfFileBloc(sl()));
+  sl.registerFactory(() => PdfFileBloc(sl(), sl(), sl(), sl()));
 }
