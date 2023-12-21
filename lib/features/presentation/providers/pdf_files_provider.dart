@@ -23,7 +23,6 @@ class PdfFilesProvider with ChangeNotifier {
 
   Future<void> fetchPdfFilesFromDb() async {
     pdfFiles = await _getPdfFileFromDbUseCase();
-    print(pdfFiles.toString());
     notifyListeners();
   }
 
@@ -39,7 +38,6 @@ class PdfFilesProvider with ChangeNotifier {
   Future<void> insertPdfFilesInDb() async {
     for (PdfFileEntity item in pdfFiles!) {
       await _insertPdfFileToDbUseCase(params: item);
-      print(item.toString());
     }
   }
 
