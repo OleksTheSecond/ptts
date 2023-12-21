@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ptts/features/presentation/bloc/pdf_file_bloc/pdf_file_bloc.dart';
+import 'package:ptts/features/presentation/bloc/pdf_files_list_bloc/pdf_file_bloc.dart';
 import 'package:ptts/features/presentation/pages/home_page/pdf_file_grid_view_item.dart';
 
 class PdfFileGridView extends StatelessWidget {
-  const PdfFileGridView({super.key, required this.state});
-  final PdfFileState state;
+  const PdfFileGridView({super.key, required this.listState});
+  final PdfFilesListState listState;
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +16,12 @@ class PdfFileGridView extends StatelessWidget {
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
-      itemBuilder: (context, index) {
-        return PdfFileGridViewItem(pdfFile: state.pdfFiles![index]);
+      itemBuilder: (cntx, index) {
+        return PdfFileGridViewItem(
+          pdfFile: listState.pdfFiles![index],
+        );
       },
-      itemCount: state.pdfFiles!.length,
+      itemCount: listState.pdfFiles!.length,
     );
   }
 }

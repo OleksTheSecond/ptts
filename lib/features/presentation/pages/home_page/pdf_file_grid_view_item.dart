@@ -10,9 +10,11 @@ class PdfFileGridViewItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: _containerDecoration(),
-      child: GridTile(
-        footer: _buildGridTileFooter(pdfFile.name, context),
-        child: _buildGridTileChild(pdfFile.path),
+      child: GestureDetector(
+        child: GridTile(
+          footer: _buildGridTileFooter(pdfFile.name, context),
+          child: _buildGridTileChild(pdfFile.path),
+        ),
       ),
     );
   }

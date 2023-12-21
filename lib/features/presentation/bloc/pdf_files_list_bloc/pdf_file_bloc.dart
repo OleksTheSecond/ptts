@@ -10,42 +10,42 @@ import 'package:ptts/features/domain/usecases/remove_pdf_file_db.dart';
 part 'pdf_file_event.dart';
 part 'pdf_file_state.dart';
 
-class PdfFileBloc extends Bloc<PdfFileEvent, PdfFileState> {
+class PdfFilesListBloc extends Bloc<PdfFileListEvent, PdfFilesListState> {
   final GetPdfFileUseCase _getPdfFileUseCase;
   final GetPdfFileFromDbUseCase _getPdfFileFromDbUseCase;
   final InsertPdfFileToDbUseCase _insertPdfFileToDbUseCase;
   final RemovePdfFileFromDbUseCase _removePdfFileFromDbUseCase;
 
-  PdfFileBloc(this._getPdfFileUseCase, this._getPdfFileFromDbUseCase,
+  PdfFilesListBloc(this._getPdfFileUseCase, this._getPdfFileFromDbUseCase,
       this._insertPdfFileToDbUseCase, this._removePdfFileFromDbUseCase)
-      : super(PdfFileInitial()) {
-    on<GetPdfFiles>(_onGetPdfFiles);
+      : super(PdfFilesListInitial()) {
+    on<GetPdfFilesList>(_onGetPdfFiles);
     on<InsertPdfFilesToDbFromDirs>(_onInsertPdfFilesToDbFromDirs);
-    on<RemovePdfFilesFromDb>(_onRemovePdfFilesFromDb);
+    on<RemovePdfFileFromDb>(_onRemovePdfFilesFromDb);
   }
 
   Future<void> _onGetPdfFiles(
-      GetPdfFiles event, Emitter<PdfFileState> emit) async {
+      GetPdfFilesList event, Emitter<PdfFilesListState> emit) async {
     final pdfFiles = await _getPdfFileFromDbUseCase();
-    emit(PdfFilesLoaded(pdfFiles));
+    emit(PdfFilesListLoaded(pdfFiles));
   }
 
   Future<void> _onRemovePdfFilesFromDb(
-      RemovePdfFilesFromDb pdfFile, Emitter<PdfFileState> emit) async {
+      RemovePdfFileFromDb pdfFile, Emitter<PdfFilesListState> emit) async {
     await _removePdfFileFromDbUseCase(params: pdfFile.pdfFile);
     final pdfFiles = await _getPdfFileFromDbUseCase();
-    emit(PdfFilesLoaded(pdfFiles));
+    emit(PdfFilesListLoaded(pdfFiles));
   }
 
   Future<void> _onInsertPdfFilesToDbFromDirs(
-      InsertPdfFilesToDbFromDirs event, Emitter<PdfFileState> emit) async {
+      InsertPdfFilesToDbFromDirs event, Emitter<PdfFilesListState> emit) async {
     final dataState = await _getPdfFileUseCase();
 
     if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
       for (var item in dataState.data!) {
         await _insertPdfFileToDbUseCase(params: item);
         final pdfFiles = await _getPdfFileFromDbUseCase();
-        emit(PdfFilesLoaded(pdfFiles));
+        emit(PdfFilesListLoaded(pdfFiles));
       }
     }
   }

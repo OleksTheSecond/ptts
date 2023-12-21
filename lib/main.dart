@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ptts/features/presentation/bloc/pdf_file_bloc/pdf_file_bloc.dart';
+import 'package:ptts/features/presentation/bloc/pdf_files_list_bloc/pdf_file_bloc.dart';
 import 'package:ptts/features/presentation/pages/home_page/pdf_files_list.dart';
 import 'package:ptts/injection_container.dart';
 
@@ -15,8 +15,8 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<PdfFileBloc>(
-      create: (context) => sl()..add(const GetPdfFiles()),
+    return BlocProvider<PdfFilesListBloc>(
+      create: (context) => sl()..add(const GetPdfFilesList()),
       child: const MaterialApp(
         home: PdfFileListPage(title: "PTTS"),
       ),

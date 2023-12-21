@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
-import 'package:ptts/features/presentation/bloc/pdf_file_bloc/pdf_file_bloc.dart';
+import 'package:ptts/features/presentation/bloc/pdf_files_list_bloc/pdf_file_bloc.dart';
 import 'package:ptts/features/presentation/pages/home_page/pdf_file_grid_view.dart';
 
 class PdfFileListPage extends StatelessWidget {
@@ -25,14 +23,15 @@ class PdfFileListPage extends StatelessWidget {
   }
 
   _buildBody() {
-    return BlocBuilder<PdfFileBloc, PdfFileState>(builder: (context, state) {
-      if (state is PdfFileInitial) {
+    return BlocBuilder<PdfFilesListBloc, PdfFilesListState>(
+        builder: (context, state) {
+      if (state is PdfFilesListInitial) {
         return const Center(
           child: CircularProgressIndicator(),
         );
       }
-      if (state is PdfFilesLoaded) {
-        return PdfFileGridView(state: state);
+      if (state is PdfFilesListLoaded) {
+        return PdfFileGridView(listState: state);
       }
       return Container();
     });
@@ -41,7 +40,7 @@ class PdfFileListPage extends StatelessWidget {
   _buildFAB(BuildContext context) {
     return FloatingActionButton.large(
       onPressed: () {
-        context.read<PdfFileBloc>().add(InsertPdfFilesToDbFromDirs());
+        context.read<PdfFilesListBloc>().add(InsertPdfFilesToDbFromDirs());
       },
       child: const Icon(Icons.add),
     );
