@@ -1,3 +1,3 @@
 # ptts
 
-A new Flutter project.
+A simple text voicer for pdf files.
