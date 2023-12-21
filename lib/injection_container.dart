@@ -7,6 +7,7 @@ import 'package:ptts/features/domain/usecases/get_pdf_file_dir.dart';
 import 'package:ptts/features/domain/usecases/insert_pdf_file_db.dart';
 import 'package:ptts/features/domain/usecases/remove_pdf_file_db.dart';
 import 'package:ptts/features/presentation/bloc/pdf_files_list_bloc/pdf_file_bloc.dart';
+import 'package:ptts/features/presentation/providers/pdf_files_provider.dart';
 
 final sl = GetIt.instance;
 
@@ -26,4 +27,5 @@ Future<void> initializeDependencies() async {
       RemovePdfFileFromDbUseCase(sl()));
 
   sl.registerFactory(() => PdfFilesListBloc(sl(), sl(), sl(), sl()));
+  sl.registerFactory(() => PdfFilesProvider(sl(), sl(), sl(), sl()));
 }
