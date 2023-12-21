@@ -1,21 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ptts/features/domain/entities/pdf_file.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:ptts/features/presentation/bloc/cubit/pdf_file_cubit.dart';
 
 class PdfFileGridViewItem extends StatelessWidget {
-  const PdfFileGridViewItem({super.key, required this.pdfFile});
-  final PdfFileEntity pdfFile;
+  PdfFileGridViewItem({super.key, required this.pdfFile});
+  PdfFileEntity pdfFile;
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<PdfFileCubit, PdfFileState>(
+      builder: (context, state) {
+        final state = context.watch<PdfFileCubit>().state;
+        return Container(
+          decoration: _containerDecoration(),
+          child: GestureDetector(
+            onTap: () {
+              if (pdfFile.isChoosed) {
+                context.read<PdfFileCubit>().unChoosePdfFile(pdfFile);
+              } else {
+                context.read<PdfFileCubit>().choosePdfFile(pdfFile);
+              }
+            },
+            child: _pdfFileBody(state, context),
+          ),
+        );
+      },
+    );
+  }
+
+  _pdfFileBody(PdfFileState state, BuildContext context) {
+    if (state is PdfFileChoosed) {
+      pdfFile = state.pdfFile!;
+      return _choosedPdfFile();
+    }
+    if (state is PdfFileNotChoosed) {
+      pdfFile = state.pdfFile!;
+      return GridTile(
+        child: _buildGridTileChild(state.pdfFile!.path),
+        footer: _buildGridTileFooter(state.pdfFile!.name, context),
+      );
+    }
+    if (state is PdfFileInitial) {
+      return GridTile(
+        child: _buildGridTileChild(pdfFile.path),
+        footer: _buildGridTileFooter(pdfFile.name, context),
+      );
+    }
+
+    return const Placeholder();
+  }
+
+  _choosedPdfFile() {
     return Container(
-      decoration: _containerDecoration(),
-      child: GestureDetector(
-        child: GridTile(
-          footer: _buildGridTileFooter(pdfFile.name, context),
-          child: _buildGridTileChild(pdfFile.path),
-        ),
-      ),
+      color: Colors.amber,
     );
   }
 
