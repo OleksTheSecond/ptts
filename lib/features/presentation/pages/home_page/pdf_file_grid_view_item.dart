@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ptts/features/domain/entities/pdf_file.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:ptts/features/presentation/bloc/cubit/pdf_file_cubit.dart';
+import 'package:ptts/injection_container.dart';
 
 class PdfFileGridViewItem extends StatelessWidget {
   PdfFileGridViewItem({super.key, required this.pdfFile});
@@ -10,27 +11,36 @@ class PdfFileGridViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PdfFileCubit, PdfFileState>(
-      builder: (context, state) {
-        final state = context.watch<PdfFileCubit>().state;
-        return Container(
-          decoration: _containerDecoration(),
-          child: GestureDetector(
-            onTap: () {
-              if (pdfFile.isChoosed) {
-                context.read<PdfFileCubit>().unChoosePdfFile(pdfFile);
-              } else {
-                context.read<PdfFileCubit>().choosePdfFile(pdfFile);
-              }
-            },
-            child: _pdfFileBody(state, context),
-          ),
-        );
-      },
+    return BlocProvider(
+      create: (context) => sl.get<PdfFileCubit>(),
+      child: BlocBuilder<PdfFileCubit, PdfFileState>(
+        builder: (context, state) {
+          final state = context.watch<PdfFileCubit>().state;
+          return Container(
+            decoration: _containerDecoration(),
+            child: GestureDetector(
+              onTap: () {
+                if (pdfFile.isChoosed) {
+                  context.read<PdfFileCubit>().unChoosePdfFile(pdfFile);
+                } else {
+                  context.read<PdfFileCubit>().choosePdfFile(pdfFile);
+                }
+              },
+              child: _pdfFileBody(state, context),
+            ),
+          );
+        },
+      ),
     );
   }
 
   _pdfFileBody(PdfFileState state, BuildContext context) {
+    if (state is PdfFileInitial) {
+      return GridTile(
+        child: _buildGridTileChild(pdfFile.path),
+        footer: _buildGridTileFooter(pdfFile.name, context),
+      );
+    }
     if (state is PdfFileChoosed) {
       pdfFile = state.pdfFile!;
       return _choosedPdfFile();
@@ -42,19 +52,18 @@ class PdfFileGridViewItem extends StatelessWidget {
         footer: _buildGridTileFooter(state.pdfFile!.name, context),
       );
     }
-    if (state is PdfFileInitial) {
-      return GridTile(
-        child: _buildGridTileChild(pdfFile.path),
-        footer: _buildGridTileFooter(pdfFile.name, context),
-      );
-    }
 
     return const Placeholder();
   }
 
   _choosedPdfFile() {
     return Container(
-      color: Colors.amber,
+      color: Colors.lightGreen,
+      child: const Center(
+          child: Icon(
+        Icons.check_circle,
+        size: 60,
+      )),
     );
   }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ptts/features/presentation/bloc/cubit/pdf_file_cubit.dart';
 import 'package:ptts/features/presentation/bloc/pdf_files_list_bloc/pdf_file_bloc.dart';
 import 'package:ptts/features/presentation/pages/home_page/pdf_files_list.dart';
 import 'package:ptts/injection_container.dart';
@@ -21,10 +20,12 @@ class MainApp extends StatelessWidget {
         BlocProvider<PdfFilesListBloc>(
           create: (context) => sl()..add(const GetPdfFilesList()),
         ),
-        BlocProvider<PdfFileCubit>(create: (context) => sl.get<PdfFileCubit>()),
+        //BlocProvider<PdfFileCubit>(create: (context) => sl.get<PdfFileCubit>()),
       ],
-      child: const MaterialApp(
-        home: PdfFileListPage(title: "PTTS"),
+      child: MaterialApp(
+        theme: ThemeData(
+            fontFamily: "Poppins", colorSchemeSeed: Color(0xff000046)),
+        home: const PdfFileListPage(title: "This is Poppins font"),
       ),
     );
   }
