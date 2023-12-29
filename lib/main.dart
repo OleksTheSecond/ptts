@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ptts/features/presentation/bloc/pdf_files_list_bloc/pdf_file_bloc.dart';
-import 'package:ptts/features/presentation/pages/home_page/pdf_files_list.dart';
+import 'package:ptts/features/presentation/pages/home_page/pdf_files_grid.dart';
 import 'package:ptts/injection_container.dart';
+import 'package:ptts/tokens/colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,12 +21,11 @@ class MainApp extends StatelessWidget {
         BlocProvider<PdfFilesListBloc>(
           create: (context) => sl()..add(const GetPdfFilesList()),
         ),
-        //BlocProvider<PdfFileCubit>(create: (context) => sl.get<PdfFileCubit>()),
       ],
       child: MaterialApp(
         theme: ThemeData(
-            fontFamily: "Poppins", colorSchemeSeed: Color(0xff000046)),
-        home: const PdfFileListPage(title: "This is Poppins font"),
+            fontFamily: "Poppins", colorSchemeSeed: PTTSColors.deepDarkBlue),
+        home: const PdfFileGridPage(title: "This is Poppins font"),
       ),
     );
   }
